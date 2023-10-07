@@ -1,11 +1,13 @@
-package com.example.superbank;
+package Controllers;
 
+import Services.BankService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import models.TransferBalance;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-
+@Slf4j
 @RestController("/balance")
 @AllArgsConstructor
 public class BalanceController {
@@ -23,8 +25,14 @@ public class BalanceController {
     }
 
     @PostMapping("/transfer")
-    public BigDecimal transfer(@RequestBody TransferBalance transferBalance) {
+    public void transfer(@RequestBody TransferBalance transferBalance) {
         bankService.makeTransfer(transferBalance);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handle(IllegalArgumentException e){
+        log.error(e.getMessage());
+        return "YA SLOMALSYA, YAPPERDOLLE";
     }
 
 }
